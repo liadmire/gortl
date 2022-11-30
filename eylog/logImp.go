@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"runtime"
@@ -118,7 +117,7 @@ func (l *logger) doRotate() error {
 	fName = path.Join(l.Path, fName)
 	_, err = os.Lstat(fName)
 	if err == nil {
-		return fmt.Errorf("Rotate: %s", l.Name)
+		return err
 	}
 
 	err = l.fileWriter.Close()
@@ -143,7 +142,6 @@ func (l *logger) writeMsg(level LevelType, msg string, v ...interface{}) error {
 
 	if l.fileWriter == nil {
 		if err := l.startlogger(); err != nil {
-			log.Printf("Error: %s\n", err.Error())
 			return err
 		}
 	}
@@ -165,7 +163,7 @@ func (l *logger) writeMsg(level LevelType, msg string, v ...interface{}) error {
 		line = 0
 	}
 	_, fileName := path.Split(file)
-	msg = fmt.Sprintf("%s  %s [ %s : %d ] %s\n", prefix, when, fileName, line, msg)
+	msg = fmt.Sprintf("%s%s %s:%d %s\n", when, prefix, fileName, line, msg)
 
 	var err error
 	if level == DEBUG {
