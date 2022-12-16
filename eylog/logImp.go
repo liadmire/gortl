@@ -136,7 +136,7 @@ RESTART_logger:
 	return nil
 }
 
-func (l *logger) writeMsg(level LevelType, msg string, v ...interface{}) error {
+func (l *logger) writeMsg(level LevelType, msg string, v ...any) error {
 	l.Lock()
 	defer l.Unlock()
 
@@ -207,7 +207,23 @@ func (l *logger) startlogger() error {
 	return nil
 }
 
-func (l *logger) Debug(format string, v ...interface{}) {
+func (l *logger) Debug(v ...any) {
+	if mode == releaseMode {
+		return
+	}
+
+	if l.Level > DEBUG {
+		return
+	}
+	msg := fmt.Sprint(v...)
+	l.writeMsg(DEBUG, msg)
+}
+
+func (l *logger) Debugf(format string, v ...any) {
+	if mode == releaseMode {
+		return
+	}
+
 	if l.Level > DEBUG {
 		return
 	}
@@ -215,28 +231,60 @@ func (l *logger) Debug(format string, v ...interface{}) {
 	l.writeMsg(DEBUG, format, v...)
 }
 
-func (l *logger) Info(format string, v ...interface{}) {
+func (l *logger) Info(v ...any) {
+	if l.Level > INFO {
+		return
+	}
+	msg := fmt.Sprint(v...)
+	l.writeMsg(INFO, msg)
+}
+
+func (l *logger) Infof(format string, v ...any) {
 	if l.Level > INFO {
 		return
 	}
 	l.writeMsg(INFO, format, v...)
 }
 
-func (l *logger) Warn(format string, v ...interface{}) {
+func (l *logger) Warn(v ...any) {
+	if l.Level > WARN {
+		return
+	}
+	msg := fmt.Sprint(v...)
+	l.writeMsg(WARN, msg)
+}
+
+func (l *logger) Warnf(format string, v ...any) {
 	if l.Level > WARN {
 		return
 	}
 	l.writeMsg(WARN, format, v...)
 }
 
-func (l *logger) Error(format string, v ...interface{}) {
+func (l *logger) Error(v ...any) {
+	if l.Level > ERROR {
+		return
+	}
+	msg := fmt.Sprint(v...)
+	l.writeMsg(ERROR, msg)
+}
+
+func (l *logger) Errorf(format string, v ...any) {
 	if l.Level > ERROR {
 		return
 	}
 	l.writeMsg(ERROR, format, v...)
 }
 
-func (l *logger) Fatal(format string, v ...interface{}) {
+func (l *logger) Fatal(v ...any) {
+	if l.Level > FATAL {
+		return
+	}
+	msg := fmt.Sprint(v...)
+	l.writeMsg(FATAL, msg)
+}
+
+func (l *logger) Fatalf(format string, v ...any) {
 	if l.Level > FATAL {
 		return
 	}

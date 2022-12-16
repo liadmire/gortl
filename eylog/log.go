@@ -20,22 +20,38 @@ func SetPath(path string) {
 	logInst().SetPath(path)
 }
 
-func Debug(format string, v ...interface{}) {
-	logInst().Debug(format, v...)
+func Debug(v ...any) {
+	logInst().Debug(v...)
 }
 
-func Info(format string, v ...interface{}) {
-	logInst().Info(format, v...)
+func Debugf(format string, v ...interface{}) {
+	logInst().Debugf(format, v...)
 }
 
-func Warn(format string, v ...interface{}) {
-	logInst().Warn(format, v...)
+func Info(v ...any) {
+	logInst().Info(v...)
 }
 
-func Error(format string, v ...interface{}) {
-	logInst().Error(format, v...)
+func Infof(format string, v ...any) {
+	logInst().Infof(format, v...)
 }
 
-func Fatal(format string, v ...interface{}) {
-	logInst().Fatal(format, v...)
+func Warnf(format string, v ...any) {
+	logInst().Warnf(format, v...)
+}
+
+func Error(v ...any) {
+	logInst().Error(v...)
+}
+
+func Errorf(format string, v ...any) {
+	logInst().Errorf(format, v...)
+}
+
+func Fatal(v ...any) {
+	logInst().Fatal(v...)
+}
+
+func Fatalf(format string, v ...any) {
+	logInst().Fatalf(format, v...)
 }
